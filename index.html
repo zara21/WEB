@@ -4,31 +4,85 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Add some basic styles for the div */
-    #myDiv {
+    #fsrch {
       width: 100px;
       height: 100px;
       background-color: lightblue;
       cursor: pointer;
     }
+
+    .error{
+        font-size: 27px;
+        display: block;
+        color: rebeccapurple;
+    }
   </style>
-  <title>Change Div Color on Click</title>
+  <title>Toggle Div Color on Click</title>
 </head>
 <body>
 
-<!-- The div element with an id of "myDiv" -->
-<div id="myDiv" onclick="changeColor()"></div>
+<input name="fsrch" id="fsrch" placeholder="ძიება"  onclick="toggleColor()">
+<span class="error"></span>
+
+
+<div class="newClassDiv">ნაყინი</div>
+
+
+
 
 <script>
-  // JavaScript function to change the color of the div
-  function changeColor() {
-    // Get the div element by its id
-    var myDiv = document.getElementById('myDiv');
+  let isRed = false;
 
-    // Change the background color to red
-    myDiv.style.backgroundColor = 'red';
+  function toggleColor() {
+    let fsrch = document.getElementById('fsrch');
+
+
+    // Toggle between red and the original color
+    if (isRed) {
+        fsrch.style.backgroundColor = 'lightblue';
+        fsrch.style.borderRadius = "0px"
+    } else {
+        fsrch.style.backgroundColor = 'red';
+        fsrch.style.borderRadius = "24px"
+
+    }
+
+    // Update the toggle state
+    isRed = !isRed;
   }
 </script>
+
+<script>
+
+    const timePleca = document.querySelector('.newClassDiv')
+    function f(){
+        timePleca.innerHTML = 'დრო გავიდა'
+        console.log('1')
+
+
+    }
+
+    setInterval(f, 3000)
+</script>
+
+<script>
+    const fsrch = document.getElementById('fsrch');
+    const error = document.querySelector('.error');
+
+    function onUserName(e){
+        if(e.target.value == 'Giorgi'){
+            error.innerHTML = 'ასეთი მომხმარებელი არსებობს'
+        }
+    }
+
+    fsrch.addEventListener('input', onUserName)
+
+
+
+
+</script>
+
+
 
 </body>
 </html>
