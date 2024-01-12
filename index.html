@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     #fsrch {
-      width: 100px;
-      height: 100px;
+      width: 200px;
+      height: 30px;
+      border: 1px solid;
+      border-radius: 5px;
       background-color: lightblue;
       cursor: pointer;
     }
@@ -40,10 +42,10 @@
     // Toggle between red and the original color
     if (isRed) {
         fsrch.style.backgroundColor = 'lightblue';
-        fsrch.style.borderRadius = "0px"
+        fsrch.style.borderRadius = "5px"
     } else {
         fsrch.style.backgroundColor = 'red';
-        fsrch.style.borderRadius = "24px"
+        fsrch.style.borderRadius = "10px"
 
     }
 
