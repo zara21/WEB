@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Title of the document</title>
-
-    <link rel="stylesheet" href="CSS/style.css">
-
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Add some basic styles for the div */
+    #myDiv {
+      width: 100px;
+      height: 100px;
+      background-color: lightblue;
+      cursor: pointer;
+    }
+  </style>
+  <title>Change Div Color on Click</title>
 </head>
-
 <body>
-    პირველი მცდელობა......
+
+<!-- The div element with an id of "myDiv" -->
+<div id="myDiv" onclick="changeColor()"></div>
+
+<script>
+  // JavaScript function to change the color of the div
+  function changeColor() {
+    // Get the div element by its id
+    var myDiv = document.getElementById('myDiv');
+
+    // Change the background color to red
+    myDiv.style.backgroundColor = 'red';
+  }
+</script>
 
 </body>
-
-
-
 </html>
