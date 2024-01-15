@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #fsrch {
+      width: 200px;
+      height: 30px;
+      border: 1px solid;
+      border-radius: 5px;
+      background-color: lightblue;
+      cursor: pointer;
+    }
+
+    .error{
+        font-size: 27px;
+        display: block;
+        color: rebeccapurple;
+    }
+    img{
+    width: 400px;
+    border-radius: 5px;
+    }
+
+    .miniBox{
+      
+      padding: 10px;
+      border: 1px solid #000;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      
+
+      
+    }
+    .miniBox a{
+      
+      color: #000;
+      text-decoration: none;
+      
+    }
+
+    .miniBox_items{
+      padding: 10px;
+    }
+    #seeMoreBtn{
+      margin: 0, auto;  
+    }
+
+    
+    
+  </style>
+  <title>Toggle Div Color on Click</title>
+</head>
+<body>
+
+<input name="fsrch" id="fsrch" placeholder="ძიება"  onclick="toggleColor()">
+<span class="error"></span>
+
+
+<div class="newClassDiv"> </div>
+<button id="seeMoreBtn" onclick="showMore()">See more</button>
+
+
+
+<!-- <script>
+
+ const axaliArray = document.querySelector('.newClassDiv')
+
+  const array = [1,2,3,4];
+  const logger = item =>{
+    axaliArray.innerHTML = `${array[2]}  ახალი ერეი`  }
+
+  
+
+  array.forEach(logger);
+
+</script> -->
+
+
+
+
+<!-- <script>
+  let isRed = false;
+
+  function toggleColor() {
+    let fsrch = document.getElementById('fsrch');
+
+
+    // Toggle between red and the original color
+    if (isRed) {
+        fsrch.style.backgroundColor = 'lightblue';
+        fsrch.style.borderRadius = "5px"
+    } else {
+        fsrch.style.backgroundColor = 'red';
+        fsrch.style.borderRadius = "10px"
+
+    }
+
+    // Update the toggle state
+    isRed = !isRed;
+  }
+</script> -->
+
+<!-- <script>
+
+ 
+
+
+    const timePleca = document.querySelector('.newClassDiv')
+    function f(){
+        timePleca.innerHTML = 'დრო გავიდა'
+        console.log('1')
+
+
+    }
+
+    setInterval(f, 3000)
+</script> -->
+
+<!-- <script>
+    const fsrch = document.getElementById('fsrch');
+    const error = document.querySelector('.error');
+
+    const nameSia = ["Giorgi", "Lasha", "GGG"]
+
+    function onUserName(e){
+        if(e.target.value == `${nameSia}`){
+            error.innerHTML = 'ასეთი მომხმარებელი არსებობს'
+        }
+    }
+
+    fsrch.addEventListener('input', onUserName)
+
+
+
+
+</script> -->
+
+<!-- <script>
+  const fsrch = document.getElementById('fsrch');
+  const error = document.querySelector('.error');
+
+  const nameSia = ["Giorgi", "Lasha", "GGG"];
+
+  function onUserName(e) {
+    const enteredName = e.target.value.trim(); // Trim whitespace
+
+    // Check if the entered name exists in the nameSia array
+    if (nameSia.includes(enteredName)) {
+      error.innerHTML = 'ასეთი მომხმარებელი არსებობს';
+    } else {
+      error.innerHTML = `ეს სახელია ${enteredName}`; // Clear error message if not in the array
+    }
+  }
+
+  fsrch.addEventListener('input', onUserName);
+</script> -->
+
+<!-- <script>
+  const axaliArray = document.querySelector('.newClassDiv');
+  const array = [1, 2, 3, 4];
+  array.forEach((item, idx) => axaliArray.innerHTML += `ინფორმაცია: ${item} ჩაწერის ინდექსი: ${idx + 1}<br>`);
+</script> -->
+<!-- <script>
+
+  const axaliArray = document.querySelector('.newClassDiv')
+
+  const array =[1,2,3,4,5,6,7,8];
+    array.forEach((item, idx) => axaliArray.innerHTML +=`<div class="miniBox ${idx +1} "> ინფორმაცია: ${item} ჩაწერის ინდექსი: ${idx +1}</div>`);  
+    
+
+
+</script> -->
+
+<!-- <script>
+  const axaliArray = document.querySelector('.newClassDiv');
+  const array = [1, 2, 3, 4,5,6,7,8];
+  const visibleLines = 4;
+
+  array.slice(0, visibleLines).forEach((item, idx) => {
+    axaliArray.innerHTML += `ინფორმაცია: ${item} ჩაწერის ინდექსი: ${idx + 1}<br>`;
+  });
+
+  function showMore() {
+    array.slice(visibleLines).forEach((item, idx) => {
+      axaliArray.innerHTML += `ინფორმაცია: ${item} ჩაწერის ინდექსი: ${visibleLines + idx + 1}<br>`;
+    });
+    document.getElementById('seeMoreBtn').style.display = 'none'; // Hide the "See more" button after displaying all lines
+  }
+</script> -->
+
+<script>
+  const axaliArray = document.querySelector('.newClassDiv');
+  const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const linesPerClick = 4;
+  let visibleLines = 0;
+
+  function showMore() {
+    const remainingLines = array.slice(visibleLines, visibleLines + linesPerClick);
+
+    if (remainingLines.length > 0) {
+      remainingLines.forEach((item, idx) => {
+        axaliArray.innerHTML += `<div class="miniBox"> <a href=""> <div class="news-1"> <img  src="IMG/image${item}.png" alt="ბარსელონა-რეალი"> 
+          <h2> ბარსელონა 6:2 მადრიდის რეალი </h2>
+           </div> <div class="miniBox_items"> <p>  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellendus, id reiciendis. Vero illo quis consequatur laboriosam corporis doloremque 
+            repudiandae blanditiis culpa laborum quaerat. Sequi quisquam consequuntur porro. Repellat, rerum nemo.</p> 
+            <button id="seeMoreBtn"  >See more</button> </a> </div> </div> `;
+      });
+
+      visibleLines += linesPerClick;
+    } else {
+      document.getElementById('seeMoreBtn').style.display = 'none'; // Hide the "See more" button when all lines are displayed
+    }
+  }
+  
+  // Initially show the first 3 lines
+  showMore();
+</script>
+
+
+
+</body>
+</html>

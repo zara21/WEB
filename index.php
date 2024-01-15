@@ -7,7 +7,10 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
         }
 
         .newClassDiv {
@@ -45,28 +48,32 @@
                 data.forEach(row => {
                     axaliArray.innerHTML += `<div class="miniBox"> 
                         <div class="news-1"> 
-                            <img src="${row.photo}" alt="img"> 
+                            <img src="data:image/jpeg;base64,${row.photo}" alt="img"> 
                             <h2>${row.title}</h2>
-                            <p>Author: ${row.author}</p>
-                            <p>Creation Date: ${row.creation_date}</p>
                         </div> 
                         <div class="miniBox_items"> 
                             <p>${row.description}</p> 
+                            <button id="seeMoreBtn">See more</button>
                         </div> 
                     </div>`;
                 });
             }
 
             function fetchData() {
-                fetch('fetch_data.php')
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Received data:', data);
-                        showData(data);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching data:', error);
-                    });
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            const data = JSON.parse(xhr.responseText);
+                            console.log("Received data:", data);
+                            showData(data);
+                        } else {
+                            console.error("Error in AJAX request. Status code:", xhr.status);
+                        }
+                    }
+                };
+                xhr.open("GET", "fetch_data.php", true);
+                xhr.send();
             }
 
             // Initially show the data
