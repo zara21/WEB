@@ -13,17 +13,28 @@
     <section class="container">
         <h1>Users Information</h1>
 
+        <form id="login-form">
+            <label for="login-username">Username:</label>
+            <input type="text" id="login-username" name="username" required>
+
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <button id="logout-btn" style="display: none;">Logout</button>
+        <div id="user-info"></div>
+
         <form id="search-form">
             <input type="text" id="search-input" placeholder="Enter title">
         </form>
         <div id="search-results"></div>
         <button id="clear-search">X</button>
 
+        <div id="user-status" style="position: fixed; top: 10px; right: 10px; display: none;"></div>
 
         <div id="user-cards-container"></div>
-
-        <div id="search-results"></div>
-        <button id="clear-search">X</button>
 
     </section>
 

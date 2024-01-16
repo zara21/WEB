@@ -1,0 +1,45 @@
+<!-- add_user.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Add User Information</title>
+</head>
+
+<body>
+
+    <section class="container">
+        <h1>Add User Information</h1>
+
+        <form id="add-user-form">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="price">Price (₾):</label>
+            <input type="number" id="price" name="price" required>
+
+            <label for="articles">Articles:</label>
+            <input type="text" id="articles" name="articles" required>
+
+            <label for="image">Image (Base64):</label>
+            <input type="text" id="image" name="image" required>
+
+            <label for="image-title">Image Title:</label>
+            <input type="text" id="image-title" name="image-title" required>
+
+            <button type="submit">Add User</button>
+        </form>
+    </section>
+
+    <script src="js/add_user.js"></script>
+
+</body>
+
+</html>
