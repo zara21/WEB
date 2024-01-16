@@ -1,49 +1,54 @@
 <?php
-// Your database connection code here
+session_start();
 
-// Assuming you have connected to the database
-$user = 'root';
-$password = '';
-
-// Database name is geeksforgeeks
-$database = 'geeksforgeeks';
-
-// Server is localhost with port number 3306
-$servername = 'localhost:3306';
-$mysqli = new mysqli($servername, $user, $password, $database);
-
-// Checking for connections
-if ($mysqli->connect_error) {
-    die('Connect Error (' .
-        $mysqli->connect_errno . ') ' .
-        $mysqli->connect_error);
-}
+$response = ['success' => false];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Modify the SQL query based on your database schema
-    $sql = "SELECT * FROM users WHERE username = '$username'";
+    // Replace with your actual database credentials
+    $user = 'root';
+    $password = '';
+    $database = 'geeksforgeeks';
+    $servername = 'localhost:3306';
 
+    // Create connection
+    $mysqli = new mysqli($servername, $user, $password, $database);
+
+    // Check connection
+    if ($mysqli->connect_error) {
+        die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
+    }
+
+    // Sanitize and validate input
+    $username = $mysqli->real_escape_string($username);
+    $password = $mysqli->real_escape_string($password);
+
+    // Fetch user data from the database
+    $sql = "SELECT * FROM users WHERE username = '$username'";
     $result = $mysqli->query($sql);
 
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
-
-        // Verify the password using password_verify()
+        // Verify password
         if (password_verify($password, $row['password'])) {
-            echo json_encode(['success' => true, 'username' => $row['username']]);
+            // Password is correct, set session variables
+            $_SESSION['username'] = $username;
+            $response['success'] = true;
+            $response['username'] = $username; // Include the username in the response
         } else {
-            echo json_encode(['success' => false, 'error' => 'Invalid password']);
+            $response['error'] = 'Invalid password';
         }
     } else {
-        echo json_encode(['success' => false, 'error' => 'User not found']);
+        $response['error'] = 'User not found';
     }
+
+    $mysqli->close();
 } else {
-    header('HTTP/1.1 405 Method Not Allowed');
-    exit;
+    $response['error'] = 'Invalid request method';
 }
 
-$mysqli->close();
+header('Content-Type: application/json');
+echo json_encode($response);
 ?>
