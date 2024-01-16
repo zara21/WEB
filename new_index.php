@@ -1,81 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>GFG User Details</title>
-    <!-- CSS FOR STYLING THE PAGE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
+            padding: 20px;
         }
 
-        .user-card {
-            border: 1px solid black;
-            margin-bottom: 10px;
+        .box-container {
+            border: 1px solid #ccc;
+            margin: 10px;
             padding: 10px;
+            width: 200px;
+            display: inline-block;
+            vertical-align: top;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
         }
 
-        h1 {
-            text-align: center;
-            color: #006600;
-            font-size: xx-large;
-            font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', 'sans-serif';
+        .box-container img {
+            max-width: 100%;
+            height: auto;
         }
 
-        .see-more-btn {
-            display: block;
-            margin: 10px auto;
+        #search-result-container {
+            margin-top: 20px;
+            display: none;
         }
 
-        img {
-            width: 150px;
-        }
-
-        #search-results {
+        #clear-search {
+            display: none;
             margin-bottom: 10px;
-            background-color: #006600;
         }
     </style>
 </head>
-
 <body>
+
 <section class="container">
     <h1>GeeksForGeeks</h1>
 
-    <form id="search-form" method="post">
-        <input type="text" id="search-input" name="search" placeholder="Enter username">
-        <button type="submit">Search</button>
-    </form>
-
     <?php
-    // Database connection parameters
+    // Your database connection code here
+
+    // Assuming you have connected to the database
     $user = 'root';
     $password = '';
+
+    // Database name is geeksforgeeks
     $database = 'geeksforgeeks';
+
+    // Server is localhost with
+    // port number 3306
     $servername = 'localhost:3306';
     $mysqli = new mysqli($servername, $user, $password, $database);
 
     // Checking for connections
     if ($mysqli->connect_error) {
-        die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
+        die('Connect Error (' .
+            $mysqli->connect_errno . ') ' .
+            $mysqli->connect_error);
     }
+    // Display all user cards
+    $sql = "SELECT * FROM userdata ORDER BY score DESC";
+    $result = $mysqli->query($sql);
 
-    // Display search results if available
-    if (isset($_POST['search'])) {
-        $searchTerm = $_POST['search'];
-        $sql = "SELECT * FROM userdata WHERE username LIKE '%$searchTerm%' ORDER BY score DESC";
-        $result = $mysqli->query($sql);
+    while ($row = $result->fetch_assoc()) {
+        echo '<div class="box-container">';
+        echo '<div class="box-items box-username">' . $row['username'] . '</div>';
+        echo '<div class="box-items box-problems">' . $row['problems'] . '</div>';
+        echo '<div class="box-items box-score">' . $row['score'] . '</div>';
+        echo '<div class="box-items box-articles">' . $row['articles'] . '</div>';
 
-        echo '<div id="search-results">';
-        
-        // Display the searched username
-        echo '<h2>Search Results for: ' . htmlspecialchars($searchTerm) . '</h2>';
+        $imageData = $row['image'];
+        $base64Image = base64_encode($imageData);
+        $imageSrc = 'data:image/jpeg;base64,' . $base64Image;
 
-        while ($row = $result->fetch_assoc()) {
-            echo createUserCardElement($row);
-        }
+        echo '<div class="box-items box-image">';
+        echo '<img src="' . $imageSrc . '" alt="' . $row['image_title'] . '">';
+        echo '</div>';
 
         echo '</div>';
     }
@@ -83,50 +94,50 @@
     $mysqli->close();
     ?>
 
-    <!-- PHP CODE TO FETCH DATA FROM ROWS -->
-    <div id="user-cards-container">
-        <?php
-        // Reconnect to the database
-        $mysqli = new mysqli($servername, $user, $password, $database);
-
-        // Loop through initial user-cards and display data
-        $sql = "SELECT * FROM userdata ORDER BY score DESC";
-        $result = $mysqli->query($sql);
-
-        while ($row = $result->fetch_assoc()) {
-            echo createUserCardElement($row);
-        }
-
-        $mysqli->close();
-        ?>
+    <div id="search-result-container">
+        <!-- Search results will be displayed here dynamically -->
     </div>
 
+    <form id="search-form" method="post">
+        <input type="text" id="search-input" name="search" placeholder="Search by username">
+    </form>
+
+    <button id="clear-search">Clear Search Results</button>
+
     <script>
-        // Your JavaScript code goes here, if needed
+        var searchInput = document.getElementById('search-input');
+        var clearButton = document.getElementById('clear-search');
+        var searchResultContainer = document.getElementById('search-result-container');
+
+        searchInput.addEventListener('input', function () {
+            var searchTerm = this.value.trim().toLowerCase();
+            var boxContainers = document.querySelectorAll('.box-container');
+
+            searchResultContainer.innerHTML = ''; // Clear previous search results
+
+            boxContainers.forEach(function (box) {
+                var username = box.querySelector('.box-username').innerText.toLowerCase();
+                if (username.includes(searchTerm)) {
+                    searchResultContainer.appendChild(box.cloneNode(true));
+                }
+            });
+
+            if (searchResultContainer.children.length > 0) {
+                searchResultContainer.style.display = 'block';
+                clearButton.style.display = 'inline-block';
+            } else {
+                searchResultContainer.style.display = 'none';
+                clearButton.style.display = 'none';
+            }
+        });
+
+        clearButton.addEventListener('click', function () {
+            searchInput.value = '';
+            searchResultContainer.style.display = 'none';
+            clearButton.style.display = 'none';
+        });
     </script>
 </section>
+
 </body>
-
 </html>
-
-<?php
-function createUserCardElement($userData)
-{
-    $userCard = '<div class="user-card">';
-    $userCard .= '<div class="user-card-items user-card-username">' . $userData['username'] . '</div>';
-    $userCard .= '<div class="user-card-items user-card-problems">' . $userData['problems'] . '</div>';
-    $userCard .= '<div class="user-card-items user-card-score">' . $userData['score'] . '</div>';
-    $userCard .= '<div class="user-card-items user-card-articles">' . $userData['articles'] . '</div>';
-
-    // Check if 'image' and 'image_title' keys exist
-    if (isset($userData['image']) && isset($userData['image_title'])) {
-        $userCard .= '<div class="user-card-items user-card-image">';
-        $userCard .= '<img src="data:image/jpeg;base64,' . base64_encode($userData['image']) . '" alt="' . $userData['image_title'] . '">';
-        $userCard .= '</div>';
-    }
-
-    $userCard .= '</div>';
-
-    return $userCard;
-}
-?>
