@@ -4,74 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display Data</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-        .newClassDiv {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .miniBox {
-            border: 1px solid #ccc;
-            padding: 10px;
-            width: 200px;
-        }
-
-        .news-1 img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .miniBox_items {
-            margin-top: 10px;
-        }
-    </style>
 </head>
 <body>
 
-    <h2>Display Data from Database</h2>
-    <div class="newClassDiv"></div>
+    <div id="data-container"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const axaliArray = document.querySelector('.newClassDiv');
-
-            function showData(data) {
-                data.forEach(row => {
-                    axaliArray.innerHTML += `<div class="miniBox"> 
-                        <div class="news-1"> 
-                            <img src="${row.photo}" alt="img"> 
-                            <h2>${row.title}</h2>
-                            <p>Author: ${row.author}</p>
-                            <p>Creation Date: ${row.creation_date}</p>
-                        </div> 
-                        <div class="miniBox_items"> 
-                            <p>${row.description}</p> 
-                        </div> 
-                    </div>`;
-                });
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost/WEB/fetch_data.php', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        displayData(data);
+                    } catch (error) {
+                        console.error("Error parsing JSON:", error);
+                    }
+                } else {
+                    console.error("Error loading data. Status code:", xhr.status);
+                }
             }
+        };
+        xhr.send();
 
-            function fetchData() {
-                fetch('fetch_data.php')
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Received data:', data);
-                        showData(data);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching data:', error);
-                    });
-            }
+        function displayData(data) {
+            var container = document.getElementById('data-container');
 
-            // Initially show the data
-            fetchData();
-        });
+            data.forEach(function (item) {
+                var div = document.createElement('div');
+                div.innerHTML = `
+                    <h2>${item.title}</h2>
+                    <p>${item.description}</p>
+                    <p>Author: ${item.author}</p>
+                    <p>Creation Date: ${item.creation_date}</p>
+                    <img src="${item.photo}" alt="Photo">
+                `;
+                container.appendChild(div);
+            });
+        }
     </script>
 
 </body>

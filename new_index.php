@@ -32,6 +32,11 @@
         img {
             width: 150px;
         }
+
+        #search-results {
+            margin-bottom: 10px;
+            background-color: #006600;
+        }
     </style>
 </head>
 
@@ -39,24 +44,22 @@
 <section class="container">
     <h1>GeeksForGeeks</h1>
 
+    <form id="search-form" method="post">
+        <input type="text" id="search-input" name="search" placeholder="Enter username">
+        <button type="submit">Search</button>
+    </form>
+
     <?php
-    // Username is root
+    // Database connection parameters
     $user = 'root';
     $password = '';
-
-    // Database name is geeksforgeeks
     $database = 'geeksforgeeks';
-
-    // Server is localhost with
-    // port number 3306
     $servername = 'localhost:3306';
     $mysqli = new mysqli($servername, $user, $password, $database);
 
     // Checking for connections
     if ($mysqli->connect_error) {
-        die('Connect Error (' .
-            $mysqli->connect_errno . ') ' .
-            $mysqli->connect_error);
+        die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
     }
 
     // Display search results if available
@@ -65,17 +68,20 @@
         $sql = "SELECT * FROM userdata WHERE username LIKE '%$searchTerm%' ORDER BY score DESC";
         $result = $mysqli->query($sql);
 
+        echo '<div id="search-results">';
+        
+        // Display the searched username
+        echo '<h2>Search Results for: ' . htmlspecialchars($searchTerm) . '</h2>';
+
         while ($row = $result->fetch_assoc()) {
-            echo '<div class="user-card" data-username="' . $row['username'] . '">';
-            // Display other information from the user-card here
-            echo '</div>';
+            echo createUserCardElement($row);
         }
+
+        echo '</div>';
     }
 
     $mysqli->close();
     ?>
-
-    
 
     <!-- PHP CODE TO FETCH DATA FROM ROWS -->
     <div id="user-cards-container">
@@ -83,40 +89,44 @@
         // Reconnect to the database
         $mysqli = new mysqli($servername, $user, $password, $database);
 
-        // Loop through user-cards and display data
-        $count = 0;
+        // Loop through initial user-cards and display data
         $sql = "SELECT * FROM userdata ORDER BY score DESC";
         $result = $mysqli->query($sql);
 
         while ($row = $result->fetch_assoc()) {
-            $count++;
-            ?>
-            <div class="user-card">
-                <div class="user-card-items user-card-username"> <?php echo $row['username']; ?></div>
-                <div class="user-card-items user-card-problems"> <?php echo $row['problems']; ?></div>
-                <div class="user-card-items user-card-score"> <?php echo $row['score']; ?></div>
-                <div class="user-card-items user-card-articles"> <?php echo $row['articles']; ?></div>
-                <div class="user-card-items user-card-image">
-                    <?php
-                    $imageData = $row['image'];
-                    $base64Image = base64_encode($imageData);
-                    $imageSrc = 'data:image/jpeg;base64,' . $base64Image;
-                    ?>
-                    <img src="<?php echo $imageSrc; ?>" alt="<?php echo $row['image_title']; ?>">
-                </div>
-            </div>
-        <?php
+            echo createUserCardElement($row);
         }
 
         $mysqli->close();
         ?>
     </div>
 
-    
+    <script>
+        // Your JavaScript code goes here, if needed
+    </script>
 </section>
-
-
-
 </body>
 
 </html>
+
+<?php
+function createUserCardElement($userData)
+{
+    $userCard = '<div class="user-card">';
+    $userCard .= '<div class="user-card-items user-card-username">' . $userData['username'] . '</div>';
+    $userCard .= '<div class="user-card-items user-card-problems">' . $userData['problems'] . '</div>';
+    $userCard .= '<div class="user-card-items user-card-score">' . $userData['score'] . '</div>';
+    $userCard .= '<div class="user-card-items user-card-articles">' . $userData['articles'] . '</div>';
+
+    // Check if 'image' and 'image_title' keys exist
+    if (isset($userData['image']) && isset($userData['image_title'])) {
+        $userCard .= '<div class="user-card-items user-card-image">';
+        $userCard .= '<img src="data:image/jpeg;base64,' . base64_encode($userData['image']) . '" alt="' . $userData['image_title'] . '">';
+        $userCard .= '</div>';
+    }
+
+    $userCard .= '</div>';
+
+    return $userCard;
+}
+?>
