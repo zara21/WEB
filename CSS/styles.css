@@ -19,6 +19,7 @@ body {
     vertical-align: top;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
+    overflow: hidden;
 }
 
 .user-card.hide {
@@ -42,3 +43,4 @@ body {
 #search-results {
     margin-bottom: 20px;
 }
+

@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $searchQuery = $data['query'];
 
     // Modify the SQL query based on your database schema and search requirements
-    $sql = "SELECT * FROM userdata WHERE username LIKE '%$searchQuery%' ORDER BY score DESC";
+    $sql = "SELECT * FROM userdata WHERE title LIKE '%$searchQuery%' ORDER BY price DESC";
 
     $result = $mysqli->query($sql);
 
@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         while ($row = $result->fetch_assoc()) {
             // Format database results into an associative array
             $userData[] = [
-                'username' => $row['username'],
-                'problems' => $row['problems'],
-                'score' => $row['score'],
+                'title' => $row['title'],
+                'description' => $row['description'],
+                'price' => $row['price'],
                 'articles' => $row['articles'],
                 'image' => base64_encode($row['image']), // Encode image data
                 'image_title' => $row['image_title'],

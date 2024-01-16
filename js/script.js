@@ -78,9 +78,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var userCard = document.createElement('div');
         userCard.className = 'user-card';
         userCard.innerHTML = `
-            <div class="user-card-items user-card-username">${userData.username}</div>
-            <div class="user-card-items user-card-problems">${userData.problems}</div>
-            <div class="user-card-items user-card-score">${userData.score}</div>
+            <div class="user-card-items user-card-username">${userData.title}</div>
+            <div class="user-card-items user-card-description">${userData.description}</div>
+            <div class="user-card-items user-card-score">${userData.price + " ₾"}</div>
             <div class="user-card-items user-card-articles">${userData.articles}</div>
             <div class="user-card-items user-card-image">
                 <img src="data:image/jpeg;base64,${userData.image}" alt="${userData.image_title}">
